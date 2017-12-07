@@ -30,12 +30,10 @@ public class FreezeDryer {
     private final static int INTERVAL = 1000 * 60; //Background task interval
     private URL apiURL;
     private Handler backgroundPullHandler = new Handler();
-    private DataStore freezeDatabase;
 
     Runnable backgroundPullTask = new Runnable() {
         @Override
         public void run() {
-            Log.d("Debug", "Runnable has executed");
             backgroundJSONPull JSONPull = new backgroundJSONPull();
             JSONPull.execute();
             backgroundPullHandler.postDelayed(backgroundPullTask, INTERVAL);
@@ -52,7 +50,6 @@ public class FreezeDryer {
 
     public FreezeDryer(String ip) {
         inClassGlobalIP = ip;
-        freezeDatabase = new DataStore(null, null, null, 1);
     }
 
 
@@ -86,18 +83,20 @@ public class FreezeDryer {
     }
 
     //Used to get specific sensor values from the sensor array, since the JSON is not valid in this section we must interpret it manually. WORKING
-    protected String getSensorValue(String Sensor){
+    protected String getSensorValue(String Sensor) {
         String sensors = getSensors();
-        if (sensors.contains(Sensor + "=")){
-            String currentCharacter = "";
-            int marker = sensors.indexOf(Sensor + "=") + Sensor.length() + 1; //go to the start of the sensor value
-            int valueEnd = marker; //used to mark the ending value
-            while (!currentCharacter.equals(",") && !currentCharacter.equals("}")){ //search for the index of the end
-                valueEnd++;
-                currentCharacter = sensors.charAt(valueEnd) + "";
+        if (sensors != null){
+            if (sensors.contains(Sensor + "=")) {
+                String currentCharacter = "";
+                int marker = sensors.indexOf(Sensor + "=") + Sensor.length() + 1; //go to the start of the sensor value
+                int valueEnd = marker; //used to mark the ending value
+                while (!currentCharacter.equals(",") && !currentCharacter.equals("}")) { //search for the index of the end
+                    valueEnd++;
+                    currentCharacter = sensors.charAt(valueEnd) + "";
+                }
+                return sensors.substring(marker, valueEnd);
             }
-            return sensors.substring(marker, valueEnd);
-        }
+    }
         return "---";
 
     }
@@ -112,14 +111,13 @@ public class FreezeDryer {
             convertedJSON = convertFromURL.getAsJsonObject();
             return convertedJSON.get(value).getAsString();
         }
-        return null;
+        return "---";
     }
 
     private class backgroundJSONPull extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
             Log.d("Debug", "async task ran");
-            Scanner URLContentGrabber;
             try {
                 apiURL = new URL("http://" + inClassGlobalIP + "/dump");
                 Scanner contentGetter = new Scanner(apiURL.openStream());
@@ -133,8 +131,10 @@ public class FreezeDryer {
                 IOE.printStackTrace();
             }
             //freezeDatabase.insertData("test", "test", "Here we would want to get sensor 39");
+
+
             System.out.println("The current Collector Temp is : " + getSensorValue("39"));
-            return null;
+            return "---";
         }
     }
 }

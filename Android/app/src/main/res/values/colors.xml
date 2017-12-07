@@ -4,4 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="labconcoPrimary">#004E9A</color>
+    <color name="labconcoSecondaryOrange">#F07C0C</color>
+    <color name="labconcoSecondaryGreen">#5EB533</color>
+    <color name="labconcoSecondaryPurple">#7B67A6</color>
+    <color name="labconcoSecondaryGray">#4A4D55</color>
+    <color name="labconcoSecondaryDetergent">#6982BE</color>
+    <color name="labconcoSecondaryBlue">#0081B9</color>
+    <color name="labconcoSecondaryLightBlue">#5D9BB4</color>
 </resources>
