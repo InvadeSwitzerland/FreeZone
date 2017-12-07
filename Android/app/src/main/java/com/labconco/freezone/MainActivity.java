@@ -45,4 +45,5 @@ public class MainActivity extends AppCompatActivity {
     public String callGetTime(){
         return freeZone.getTimeRemaining();
     }
+
 }

@@ -1,22 +1,31 @@
 package com.labconco.freezone;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.MalformedURLException;
 
 /**
  * Created by James Holdcroft
- *
+ * TODO: Remove hardcode path
  */
 public class CSVGetter{
     private String CSVName = "";
     private String freezeDryerIP = "";
     private URL CSVURL = null;
     private HttpURLConnection connection = null;
+    private InputStream input = null;
+    private OutputStream output = null;
 
     public CSVGetter (String name, String ip) {
         this.CSVName = name;
@@ -27,7 +36,6 @@ public class CSVGetter{
         subCSVGetter cvg = new subCSVGetter();
         cvg.execute();
     }
-
 
     public class subCSVGetter extends AsyncTask<String, String, String> {
         public subCSVGetter() {
@@ -49,8 +57,23 @@ public class CSVGetter{
                 try {
                     connection = (HttpURLConnection) CSVURL.openConnection();
                     connection.connect();
+
+                    input = connection.getInputStream(); //Download
+                    output = new FileOutputStream("/data/data/com.labconco.freezone/files/");
+
                 } catch (IOException IOE) {
-                    Log.d("Debug", "IOException in CSVGetter");
+                    Log.d("Debug", "IOException in CSVGetter\n" + IOE.getMessage());
+                } finally {
+                    try {
+                        if (output != null)
+                            output.close();
+                        if (input != null)
+                            input.close();
+                    } catch (IOException ignored) {
+                    }
+
+                    if (connection != null)
+                        connection.disconnect();
                 }
             } catch (MalformedURLException malURL) {
                 Log.d("Debug", "MalformedURL in CSV getter");
