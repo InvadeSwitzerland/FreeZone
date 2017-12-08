@@ -3,25 +3,21 @@ package com.labconco.freezone;
 //Connection Imports
 import android.os.AsyncTask;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.Scanner;
 import java.net.MalformedURLException;
 
 //JSON imports
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 //Misc imports
 import android.os.Handler;
-import android.view.View;
-import android.util.Log;
-import android.widget.*;
+import android.util.Log; //favorite import
 /**
  * Created by James Holdcroft
- * TODO:
+ * TODO: CSV Lister
  */
 public class FreezeDryer {
     private String inClassGlobalIP = ""; //get String to make global
@@ -133,7 +129,6 @@ public class FreezeDryer {
                 IOE.printStackTrace();
             }
             //freezeDatabase.insertData("test", "test", "Here we would want to get sensor 39");
-
 
             System.out.println("The current Collector Temp is : " + getSensorValue("39"));
             return "---";

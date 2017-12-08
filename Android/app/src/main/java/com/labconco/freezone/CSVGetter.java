@@ -3,7 +3,6 @@ package com.labconco.freezone;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,7 +38,6 @@ public class CSVGetter{
 
     public class subCSVGetter extends AsyncTask<String, String, String> {
         public subCSVGetter() {
-
         }
 
 
@@ -47,7 +45,6 @@ public class CSVGetter{
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d("Debug", "Starting CSVDownload task");
-
         }
 
         @Override
@@ -62,8 +59,7 @@ public class CSVGetter{
                     output = new FileOutputStream(new File(appContext.getCacheDir() + "/" + CSVName));
                     byte data[] = new byte[2048];
                     int count;
-                    while ((count = input.read(data)) != -1)
-                    {
+                    while ((count = input.read(data)) != -1) {
                         output.write(data, 0, count);
                     }
                 } catch (IOException IOE) {

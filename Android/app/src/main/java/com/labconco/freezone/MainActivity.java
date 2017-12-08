@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /*
-TODO: IP Enter Screen, Start animation, UI, Background run, Graphing, Translations, Unit Conversions, add round icons, Settings, Look into making the bakcground task a service, figure out how to run setup
+TODO: CSV list, IP Enter Screen, Start animation, UI and gestures, Graphing, Translations, Unit Conversions, add round icons, Settings, figure out how to run setup, push notifications
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -39,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
                 firstRun = false;
             }
         }
-        CSVGetter csv = new CSVGetter("BATCH003", dryerIP, this);
-        csv.getterStart();
-
         setContentView(R.layout.activity_main); // Sets the content view MAKE SURE THIS LINE DOESN'T GET DELETED
     }
 
