@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">FreeZone</string>
     <string name="TimeString">under construction</string>
+    <string name="ipInputHolder">192.168.0.1</string>
+    <string name="ipButtonHolder">SET IP</string>
+    <string name="ipLabelHolder">Freeze Dryer IP:</string>
 </resources>

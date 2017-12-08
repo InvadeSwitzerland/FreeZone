@@ -1,9 +1,7 @@
 package com.labconco.freezone;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -17,7 +15,7 @@ import java.net.MalformedURLException;
 
 /**
  * Created by James Holdcroft
- * TODO: Remove hardcode path
+ * TODO: use a download manager
  */
 public class CSVGetter{
     private String CSVName = "";
@@ -26,10 +24,12 @@ public class CSVGetter{
     private HttpURLConnection connection = null;
     private InputStream input = null;
     private OutputStream output = null;
+    private Context appContext = null;
 
-    public CSVGetter (String name, String ip) {
+    public CSVGetter (String name, String ip, Context context) {
         this.CSVName = name;
         this.freezeDryerIP = ip;
+        this.appContext = context;
     }
 
     public void getterStart(){
@@ -51,7 +51,7 @@ public class CSVGetter{
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected String doInBackground(String... donkey) {
             try {
                 CSVURL = new URL("http://" + freezeDryerIP + "/dir/" + CSVName + ".csv");
                 try {
@@ -59,8 +59,13 @@ public class CSVGetter{
                     connection.connect();
 
                     input = connection.getInputStream(); //Download
-                    output = new FileOutputStream("/data/data/com.labconco.freezone/files/");
-
+                    output = new FileOutputStream(new File(appContext.getCacheDir() + "/" + CSVName));
+                    byte data[] = new byte[2048];
+                    int count;
+                    while ((count = input.read(data)) != -1)
+                    {
+                        output.write(data, 0, count);
+                    }
                 } catch (IOException IOE) {
                     Log.d("Debug", "IOException in CSVGetter\n" + IOE.getMessage());
                 } finally {

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/ipInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_marginStart="11dp"
+        android:layout_toEndOf="@+id/textView2"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/ipInputHolder"
+        android:textAlignment="viewStart"
+        android:textColor="@color/labconcoPrimary" />
+
+    <Button
+        android:id="@+id/IPbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ipInput"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/roboto"
+        android:text="@string/ipButtonHolder"
+        android:textColor="@color/labconcoPrimary"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/ipLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="135dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/ipLabelHolder"
+        android:textColor="@color/labconcoPrimary"
+        android:textSize="18sp" />
+</android.widget.RelativeLayout>

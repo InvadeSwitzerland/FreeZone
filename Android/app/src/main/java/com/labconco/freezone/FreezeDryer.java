@@ -103,13 +103,15 @@ public class FreezeDryer {
 
     //Gets specific values from the JSON cluster
     private String getValue(String value){
-        Log.d("Debug", "Running getValue");
-        JsonElement convertFromURL;
-        JsonObject convertedJSON;
-        convertFromURL = jsonParser.parse(URLContent); //retrieves specified JsonValue
-        if (convertFromURL.isJsonObject()){
-            convertedJSON = convertFromURL.getAsJsonObject();
-            return convertedJSON.get(value).getAsString();
+        if (URLContent != null) { //don't check null content
+            Log.d("Debug", "Running getValue");
+            JsonElement convertFromURL;
+            JsonObject convertedJSON;
+            convertFromURL = jsonParser.parse(URLContent); //retrieves specified JsonValue
+            if (convertFromURL.isJsonObject()) {
+                convertedJSON = convertFromURL.getAsJsonObject();
+                return convertedJSON.get(value).getAsString();
+            }
         }
         return "---";
     }
