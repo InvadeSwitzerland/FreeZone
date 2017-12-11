@@ -4,4 +4,8 @@
     <string name="ipInputHolder">192.168.0.1</string>
     <string name="ipButtonHolder">SET IP</string>
     <string name="ipLabelHolder">Freeze Dryer IP:</string>
+    <string name="temperature_label">Collector</string>
+    <string name="temperature_data">--°C</string>
+    <string name="vacuum_level">Vacuum</string>
+    <string name="vacuum_data">--mbar</string>
 </resources>

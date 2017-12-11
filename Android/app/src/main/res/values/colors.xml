@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#004E9A</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#004E9A</color>
     <color name="colorAccent">#FF4081</color>
     <color name="labconcoPrimary">#004E9A</color>
     <color name="labconcoSecondaryOrange">#F07C0C</color>

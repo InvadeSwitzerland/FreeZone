@@ -3,7 +3,9 @@ package com.labconco.freezone;
 //Connection Imports
 import android.os.AsyncTask;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.net.MalformedURLException;
 
@@ -17,15 +19,18 @@ import android.os.Handler;
 import android.util.Log; //favorite import
 /**
  * Created by James Holdcroft
- * TODO: CSV Lister
  */
 public class FreezeDryer {
     private String inClassGlobalIP = ""; //get String to make global
     private String URLContent; //This is grabbed directly from the url
     private JsonParser jsonParser = new JsonParser();
-    private final static int INTERVAL = 1000 * 60; //Background task interval
+    private final static int INTERVAL = 60000; //Background task interval
     private URL apiURL;
+    private URL csvURL;
+    private String unparsedCSVHTML;
     private Handler backgroundPullHandler = new Handler();
+    private StringBuffer buffer;
+
 
     Runnable backgroundPullTask = new Runnable() {
         @Override
@@ -48,11 +53,11 @@ public class FreezeDryer {
         inClassGlobalIP = ip;
     }
 
-
     protected void connect(){
         backgroundJSONPull JSONPull = new backgroundJSONPull();
         JSONPull.execute();
     }
+
     protected String getIP(){
         return inClassGlobalIP;
     }
@@ -112,12 +117,42 @@ public class FreezeDryer {
         return "---";
     }
 
+    //Used to get a list of avaliable CSV files;
+    protected ArrayList<String> getCSVList(){
+        ArrayList<String> csvNames = new ArrayList<String>();
+
+        if (buffer == null) {
+            Log.d("Debug", "buffer is blank");
+        } else {
+            for (int index = buffer.indexOf("/dir/");
+                 index >= 0;
+                 index = buffer.indexOf("/dir/", index + 1)) {
+                int indexStart = index + 5;
+                int indexEnd = indexStart;
+                String charHold = "";
+                while (!charHold.equalsIgnoreCase(".")) {
+                    indexEnd++;
+                    charHold = buffer.charAt(indexEnd) + "";
+                }
+                csvNames.add(buffer.substring(indexStart, indexEnd));
+            }
+        }
+        return csvNames;
+    }
+
     private class backgroundJSONPull extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
             Log.d("Debug", "async task ran");
             try {
                 apiURL = new URL("http://" + inClassGlobalIP + "/dump");
+                csvURL = new URL("http://" + inClassGlobalIP);
+                InputStream is = csvURL.openStream();
+                int ptr = 0;
+                buffer = new StringBuffer();
+                while ((ptr = is.read()) != -1) { //gets the html
+                    buffer.append((char)ptr);
+                }
                 Scanner contentGetter = new Scanner(apiURL.openStream());
                 URLContent = contentGetter.nextLine();
             } catch (MalformedURLException Malformed) {
@@ -128,7 +163,6 @@ public class FreezeDryer {
                 System.out.println("IO Exception occurred");
                 IOE.printStackTrace();
             }
-            //freezeDatabase.insertData("test", "test", "Here we would want to get sensor 39");
 
             System.out.println("The current Collector Temp is : " + getSensorValue("39"));
             return "---";
