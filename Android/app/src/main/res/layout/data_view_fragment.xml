@@ -6,7 +6,7 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/temperature_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -20,10 +20,10 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/temperature_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/temperature_label"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="11dp"
         android:fontFamily="@font/roboto"
@@ -33,24 +33,24 @@
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/vacuum_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="36dp"
+        android:layout_below="@+id/temperature_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="73dp"
         android:fontFamily="@font/roboto"
         android:text="@string/vacuum_level"
         android:textAlignment="center"
-        android:layout_centerHorizontal="true"
         android:textColor="@color/labconcoPrimary"
         android:textSize="36sp"
         android:textStyle="bold" />
+
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/vacuum_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/vacuum_label"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/roboto"

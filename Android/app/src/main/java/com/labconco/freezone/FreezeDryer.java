@@ -80,7 +80,7 @@ public class FreezeDryer {
     //Matches the sensor identity with an array index to make it easier to find the sensors name
     protected String identifySensor(int sensor){
         String[] sensors = {"unknown", "Lexsol Temp Sensor", "Shelf Temp Probe", "Shelf Sample Probe", "Collector Temp Sensor", "Lexsol Temp Sensor", "Temp Probe 1", "Temp Probe 2", "Temp Probe 3", "Shelf 1 Temp Probe", "Shelf 2 Temp Probe", "Shelf 3 Temp Probe", "Shelf 4 Temp Probe", "Shelf 5 Temp Probe", "Shelf 1 Sample Probe", "Shelf 2 Sample Probe", "Shelf 3 Sample Probe", "Shelf 4 Sample Probe", "Shelf 5 Sample Probe", "Shelf 1 Temp Probe", "Shelf 2 Temp Probe", "Shelf 3 Temp Probe", "Shelf 4 Temp Probe", "Shelf 5 Temp Probe", "Shelf 1 Sample Probe", "Shelf 2 Sample Probe", "Shelf 3 Sample Probe", "Shelf 4 Sample Probe", "Shelf 5 Sample Probe", "Tray 1 Temp Probe", "Tray 2 Temp Probe", "Tray 3 Temp Probe", "Tray 4 Temp Probe", "Tray 5 Temp Probe", "Tray 1 Sample Probe", "Tray 2 Sample Probe", "Tray 3 Sample Probe", "Tray 4 Sammple Probe", "Tray 5 Sample Probe", "Collector Temp Sensor", "Mini-Chamber Temp", "Shell Freezer Temp", "Triad Home Screen", "Reserved", "Reserved", "Reserved", "Reserved", "Reserved", "Reserved", "Reserved", "System Vacuum Sensor", "System Vacuum Sensor", "System Vacuum Sensor", "Vacuum Sample Sensor 1", "Vacuum Sample Sensor 2", "Vacuum Sample Sensor 3","Vacuum Sample Sensor 4", "Vacuum Sample Sensor 5", "Vacuum Sample Sensor 6",};
-        return sensors[sensor];
+        return sensors[1];
     }
 
     //Used to get specific sensor values from the sensor array, since the JSON is not valid in this section we must interpret it manually. WORKING
