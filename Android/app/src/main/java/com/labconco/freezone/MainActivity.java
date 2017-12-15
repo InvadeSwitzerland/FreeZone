@@ -1,40 +1,31 @@
 package com.labconco.freezone;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /*
-TODO: IP Enter Screen, Start animation, UI and gestures, Graphing, Translations, Unit Conversions, add round icons, Settings, figure out how to run setup, push notifications
+TODO: Settings, Start animation, UI and gestures, Graphing, Translations, push notifications
  */
 
 public class MainActivity extends AppCompatActivity {
-    private Boolean firstRun = true; //used for setup change to false eventually
-    private String dryerIP = "12.43.13.50";
+    private String dryerIP = "";
     private FreezeDryer freeZone;
     private Handler updateHandler = new Handler();
+    private savedPreferenceManager preferenceManager;
+    public static Context contextOfApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        contextOfApplication = getApplicationContext();
         try {
             this.getSupportActionBar().hide(); //hide action bar and handle possible exception
             Log.d("Debug", "actionbar hide success");
@@ -43,35 +34,42 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //remove notification bar
-
-        if (firstRun){
-            Log.d("Debug", "Running firstRun setup");
-            if (freeZone == null) { //if freeze zone does not have values create it
-                Log.d("Debug", "Setup executing");
-                freeZone = new FreezeDryer(dryerIP);
-                freeZone.startRepeatingTask(); //does the background updating
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ie) {Log.d("Debug", "Main delay has been interrupted.");} //Delaying to let the background task run real quick
-                firstRun = false;
-            }
-        }
-
-        System.out.println(freeZone.getCSVList());
-
         setContentView(R.layout.activity_main); // Sets the content view MAKE SURE THIS LINE DOESN'T GET DELETED
-        forceValueUpdate();
-        startValueUpdates();
+
+
+        //SETUP
+        preferenceManager = new savedPreferenceManager(this.getApplicationContext()); //Get preferences
+        //preferenceManager.store("firstRun", "Empty"); //TODO: REMOVE INJECTOR
+        if (preferenceManager.pull("firstRun").equalsIgnoreCase("Empty")){
+            Log.d("Debug", "Running setup");
+            showDialog();
+            preferenceManager.store("firstRun", "False"); //store so setup isn't needed anymore
+            preferenceManager.store("temperature_unit", "°C"); //store defaults
+            preferenceManager.store("pressure_unit", "mBar");
+        } else {
+            dryerIP = preferenceManager.pull("dryer_ip");
+            Log.d("Debug", "Setup not required\nConnected to dryer: " + dryerIP);
+            freeZone = new FreezeDryer(dryerIP);
+            updateHandler.postDelayed(valueUpdates, 5000); //Delay 5 sec to let values fetch
+        }
     }
 
     protected void updateTemperature(String value){
-        String temperatureText = value + "°C";
+        String temperatureText = value + preferenceManager.pull("temperature_unit");
         TextView temperatureView = findViewById(R.id.temperature_view);
         temperatureView.setText(temperatureText);
     }
 
     protected void updateVacuum(String value){
-        String vacuumText = value;// + "mbar";
+        String vacuumText;
+
+        if (value.equalsIgnoreCase("high") || value.equalsIgnoreCase("low")){
+            vacuumText = value;
+        } else {
+            vacuumText = value + preferenceManager.pull("pressure_unit");
+            startTask();
+        }
+
         TextView vacuumView = findViewById(R.id.vacuum_view);
         vacuumView.setText(vacuumText);
     }
@@ -82,17 +80,14 @@ public class MainActivity extends AppCompatActivity {
         frag.show(manager, "ipDiag");
     }
 
-    public void setDryerIP(String ip){
-        this.dryerIP = ip;
+    public void startTask(){
+        freeZone = new FreezeDryer(dryerIP);
+        freeZone.startRepeatingTask(); //does the background updating
     }
 
-    private void startValueUpdates(){
-        valueUpdates.run();
-    }
-
-    private void forceValueUpdate(){
-        updateTemperature(freeZone.getSensorValue("39"));
-        updateVacuum(freeZone.getvacuumLevel());
+    //Used to pass context
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
     }
 
     Runnable valueUpdates = new Runnable() {

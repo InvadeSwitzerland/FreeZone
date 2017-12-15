@@ -105,7 +105,6 @@ public class FreezeDryer {
     //Gets specific values from the JSON cluster
     private String getValue(String value){
         if (URLContent != null) { //don't check null content
-            Log.d("Debug", "Running getValue");
             JsonElement convertFromURL;
             JsonObject convertedJSON;
             convertFromURL = jsonParser.parse(URLContent); //retrieves specified JsonValue
@@ -160,11 +159,8 @@ public class FreezeDryer {
                 Malformed.printStackTrace();
             } catch (IOException IOE) {
                 Log.e("Connection", "IOException in FreezeDryer class");
-                System.out.println("IO Exception occurred");
-                IOE.printStackTrace();
+                Log.d("Debug", "IO Exception occured\n" +IOE.getStackTrace());
             }
-
-            System.out.println("The current Collector Temp is : " + getSensorValue("39"));
             return "---";
         }
     }

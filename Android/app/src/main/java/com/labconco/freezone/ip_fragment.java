@@ -13,18 +13,16 @@ import android.widget.Toast;
 
 /**
  * Created by James Holdcroft
- * TODO: Get setIP text, Connect to the IPValidator
  */
 
 public class ip_fragment extends DialogFragment implements View.OnClickListener{
     private EditText ip;
     Button setIP;
-    private MainActivity test = new MainActivity();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ip_fragment, null);
-        setIP = view.findViewById(R.id.IPbutton);
+        setIP =  view.findViewById(R.id.IPbutton);
         setCancelable(false);
         setIP.setOnClickListener(this);
         return view;
@@ -34,12 +32,18 @@ public class ip_fragment extends DialogFragment implements View.OnClickListener{
     public void onClick(View view) {
         if(view.getId() == R.id.IPbutton){
             Log.d("Debug", "ip set");
-            dismiss();
-            Toast.makeText(getActivity(), "Freeze Dryer IP has been set.", Toast.LENGTH_SHORT).show();
+            ip = getDialog().findViewById(R.id.ipInput);
+            savedPreferenceManager preferenceManager = new savedPreferenceManager(MainActivity.getContextOfApplication());
+            if (ip != null) {
+                IPValidator validator = new IPValidator(ip.getText().toString());
+                if (validator.validate()){
+                    preferenceManager.store("dryer_ip", ip.getText().toString());
+                    Toast.makeText(getActivity(), "Freeze Dryer IP has been set.", Toast.LENGTH_SHORT).show();
+                    dismiss();
+                } else {
+                    Toast.makeText(getActivity(), "Invalid IP", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
-    }
-
-    public String getIP(){
-        return ip.getText() + "";
     }
 }

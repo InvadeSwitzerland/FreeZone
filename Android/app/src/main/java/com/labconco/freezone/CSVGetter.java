@@ -11,10 +11,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.MalformedURLException;
-
 /**
  * Created by James Holdcroft
- * TODO: use a download manager
  */
 public class CSVGetter{
     private String CSVName = "";

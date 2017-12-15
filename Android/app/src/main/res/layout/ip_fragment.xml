@@ -13,6 +13,7 @@
         android:layout_marginStart="11dp"
         android:layout_toEndOf="@+id/ipLabel"
         android:ems="10"
+        android:hint="192.168.0.1"
         android:inputType="textShortMessage"
         android:textAlignment="viewStart"
         android:textColor="@color/labconcoPrimary" />
